@@ -17,10 +17,64 @@
 
     h1 {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
       font-size: 1.8rem;
       color: #2d3748;
     }
+
+    .auth-status-bar {
+      text-align: center;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .auth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .auth-badge.viewer {
+      background: #edf2f7;
+      color: #718096;
+    }
+
+    .auth-badge.editor {
+      background: #c6f6d5;
+      color: #276749;
+    }
+
+    .auth-action-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .auth-action-btn.login-btn {
+      background: #4299e1;
+      color: white;
+    }
+
+    .auth-action-btn.login-btn:hover { background: #3182ce; }
+
+    .auth-action-btn.logout-btn {
+      background: #fed7d7;
+      color: #c53030;
+    }
+
+    .auth-action-btn.logout-btn:hover { background: #feb2b2; }
 
     .container {
       max-width: 900px;
@@ -88,22 +142,11 @@
     }
 
     .day-cell:hover { background: #ebf4ff; border-color: #bee3f8; }
-
-    .day-cell.empty { background: transparent; cursor: default; }
+    .day-cell.empty { background: transparent; cursor: default; pointer-events: none; }
 
     .day-cell.today {
       background: #ebf8ff;
       border-color: #4299e1;
-    }
-
-    .day-cell.has-events::after {
-      content: '';
-      display: block;
-      width: 6px;
-      height: 6px;
-      background: #4299e1;
-      border-radius: 50%;
-      margin: 2px auto 0;
     }
 
     .day-num {
@@ -113,9 +156,7 @@
       text-align: center;
     }
 
-    .day-cell.today .day-num {
-      color: #2b6cb0;
-    }
+    .day-cell.today .day-num { color: #2b6cb0; }
 
     .event-dots {
       display: flex;
@@ -132,7 +173,7 @@
       flex-shrink: 0;
     }
 
-    /* Modal */
+    /* Modals shared */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -180,9 +221,7 @@
 
     .close-btn:hover { color: #4a5568; }
 
-    .form-group {
-      margin-bottom: 14px;
-    }
+    .form-group { margin-bottom: 14px; }
 
     .form-group label {
       display: block;
@@ -195,8 +234,7 @@
     }
 
     .form-group input,
-    .form-group textarea,
-    .form-group select {
+    .form-group textarea {
       width: 100%;
       padding: 9px 12px;
       border: 1.5px solid #e2e8f0;
@@ -208,13 +246,119 @@
     }
 
     .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
+    .form-group textarea:focus {
       outline: none;
       border-color: #4299e1;
     }
 
+    .form-group input.input-error { border-color: #fc8181; }
+
     .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .error-msg {
+      font-size: 0.82rem;
+      color: #e53e3e;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-msg.visible { display: block; }
+
+    .primary-btn {
+      width: 100%;
+      padding: 11px;
+      background: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+
+    .primary-btn:hover { background: #3182ce; }
+
+    /* Password modal specifics */
+    .lock-icon {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .pw-modal-desc {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #718096;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .pw-input-wrap {
+      position: relative;
+    }
+
+    .pw-input-wrap input {
+      padding-right: 42px;
+    }
+
+    .toggle-pw-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #a0aec0;
+      font-size: 1rem;
+      padding: 2px;
+    }
+
+    .toggle-pw-btn:hover { color: #4a5568; }
+
+    .attempts-warning {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.83rem;
+      color: #c53030;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .attempts-warning.visible { display: block; }
+
+    /* Change password link */
+    .change-pw-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: #4299e1;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .change-pw-link:hover { color: #2b6cb0; }
+
+    /* Event modal */
+    .viewer-notice {
+      background: #fffbeb;
+      border: 1px solid #f6e05e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #744210;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .add-event-form { margin-bottom: 4px; }
 
     .add-btn {
       width: 100%;
@@ -232,7 +376,6 @@
 
     .add-btn:hover { background: #3182ce; }
 
-    /* Events list in modal */
     .events-list { margin-top: 20px; }
 
     .events-list h4 {
@@ -301,7 +444,26 @@
       padding: 12px 0;
     }
 
-    /* Upcoming events panel */
+    /* Colour picker */
+    .color-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .color-opt {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .color-opt:hover { transform: scale(1.15); }
+    .color-opt.selected { border-color: #2d3748; }
+
+    /* Upcoming panel */
     .upcoming-card {
       background: white;
       border-radius: 16px;
@@ -373,30 +535,47 @@
       padding: 16px 0;
     }
 
-    /* Color options */
-    .color-options {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .section-divider {
+      border: none;
+      border-top: 1px solid #edf2f7;
+      margin: 18px 0;
     }
 
-    .color-opt {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: border-color 0.15s, transform 0.15s;
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #2d3748;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
     }
 
-    .color-opt:hover { transform: scale(1.15); }
-    .color-opt.selected { border-color: #2d3748; }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>📅 Calendar of Events</h1>
+  <h1>📅 My Calendar</h1>
+
+  <!-- Auth status bar -->
+  <div class="auth-status-bar">
+    <span class="auth-badge viewer" id="authBadge">👁 Viewing only</span>
+    <button class="auth-action-btn login-btn" id="authActionBtn" onclick="handleAuthAction()">
+      🔑 Editor Login
+    </button>
+  </div>
 
   <div class="calendar-card">
     <div class="cal-header">
@@ -413,7 +592,78 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal-overlay" id="passwordModalOverlay">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3 id="pwModalTitle">Editor Login</h3>
+      <button class="close-btn" onclick="closePasswordModal()">&#x2715;</button>
+    </div>
+    <div class="lock-icon">🔒</div>
+    <p class="pw-modal-desc" id="pwModalDesc">
+      Enter the editor password to create and manage events.
+    </p>
+
+    <div class="attempts-warning" id="attemptsWarning"></div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <div class="pw-input-wrap">
+        <input type="password" id="passwordInput" placeholder="Enter password"
+               onkeydown="if(event.key==='Enter') submitPassword()" />
+        <button class="toggle-pw-btn" onclick="togglePasswordVisibility('passwordInput', this)" title="Show/hide password">👁</button>
+      </div>
+      <div class="error-msg" id="pwErrorMsg">Incorrect password. Please try again.</div>
+    </div>
+
+    <button class="primary-btn" id="pwSubmitBtn" onclick="submitPassword()">Unlock Editing</button>
+    <span class="change-pw-link" onclick="openChangePwModal()">Change editor password</span>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal-overlay" id="changePwModalOverlay">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>Change Editor Password</h3>
+      <button class="close-btn" onclick="closeChangePwModal()">&#x2715;</button>
+    </div>
+
+    <div class="form-group">
+      <label>Current Password</label>
+      <div class="pw-input-wrap">
+        <input type="password" id="currentPwInput" placeholder="Enter current password" />
+        <button class="toggle-pw-btn" onclick="togglePasswordVisibility('currentPwInput', this)" title="Show/hide password">👁</button>
+      </div>
+      <div class="error-msg" id="currentPwError">Incorrect current password.</div>
+    </div>
+
+    <div class="form-group">
+      <label>New Password</label>
+      <div class="pw-input-wrap">
+        <input type="password" id="newPwInput" placeholder="Enter new password (min. 6 chars)" />
+        <button class="toggle-pw-btn" onclick="togglePasswordVisibility('newPwInput', this)" title="Show/hide password">👁</button>
+      </div>
+      <div class="error-msg" id="newPwError">Password must be at least 6 characters.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Confirm New Password</label>
+      <div class="pw-input-wrap">
+        <input type="password" id="confirmPwInput" placeholder="Re-enter new password" />
+        <button class="toggle-pw-btn" onclick="togglePasswordVisibility('confirmPwInput', this)" title="Show/hide password">👁</button>
+      </div>
+      <div class="error-msg" id="confirmPwError">Passwords do not match.</div>
+    </div>
+
+    <button class="primary-btn" onclick="submitChangePw()">Update Password</button>
+  </div>
+</div>
+
+<!-- EVENT MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -421,23 +671,29 @@
       <button class="close-btn" onclick="closeModal()">&#x2715;</button>
     </div>
 
-    <div class="form-group">
-      <label>Event Title</label>
-      <input type="text" id="eventTitle" placeholder="e.g. Team Meeting" />
+    <div class="viewer-notice" id="viewerNotice">
+      🔒 You are in view-only mode. <span class="change-pw-link" style="display:inline;margin:0;" onclick="closeModal(); openPasswordModal();">Login as editor</span> to add or delete events.
     </div>
-    <div class="form-group">
-      <label>Time</label>
-      <input type="time" id="eventTime" />
+
+    <div class="add-event-form" id="addEventForm">
+      <div class="form-group">
+        <label>Event Title</label>
+        <input type="text" id="eventTitle" placeholder="e.g. Team Meeting" />
+      </div>
+      <div class="form-group">
+        <label>Time</label>
+        <input type="time" id="eventTime" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="eventDesc" placeholder="Optional details..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Colour</label>
+        <div class="color-options" id="colorOptions"></div>
+      </div>
+      <button class="add-btn" onclick="addEvent()">Add Event</button>
     </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="eventDesc" placeholder="Optional details..."></textarea>
-    </div>
-    <div class="form-group">
-      <label>Colour</label>
-      <div class="color-options" id="colorOptions"></div>
-    </div>
-    <button class="add-btn" onclick="addEvent()">Add Event</button>
 
     <div class="events-list">
       <h4>Events on this day</h4>
@@ -447,257 +703,211 @@
 </div>
 
 <script>
+  // ── Constants ──────────────────────────────────────────────────────────────
   const COLORS = ['#4299e1','#48bb78','#ed8936','#e53e3e','#9f7aea','#38b2ac','#f6ad55','#fc8181'];
+  const DEFAULT_PASSWORD = 'TYNADMIN';
+  const MAX_ATTEMPTS = 5;
+  const LOCKOUT_MINUTES = 5;
+
+  // ── State ──────────────────────────────────────────────────────────────────
   let selectedColor = COLORS[0];
   let currentDate = new Date();
   let viewYear = currentDate.getFullYear();
   let viewMonth = currentDate.getMonth();
   let selectedDateKey = null;
+  let isEditor = false;
 
-  // Load events from localStorage
-  let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
+  // Persisted state
+  let events      = JSON.parse(localStorage.getItem('calendarEvents')   || '{}');
+  let storedHash  = localStorage.getItem('calendarEditorPwHash')        || hashPassword(DEFAULT_PASSWORD);
+  let failedAttempts = parseInt(localStorage.getItem('calFailedAttempts') || '0');
+  let lockoutUntil   = parseInt(localStorage.getItem('calLockoutUntil')   || '0');
 
-  function saveEvents() {
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
-  }
-
-  function dateKey(y, m, d) {
-    return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  }
-
-  function buildColorPicker() {
-    const container = document.getElementById('colorOptions');
-    container.innerHTML = '';
-    COLORS.forEach(c => {
-      const div = document.createElement('div');
-      div.className = 'color-opt' + (c === selectedColor ? ' selected' : '');
-      div.style.background = c;
-      div.onclick = () => {
-        selectedColor = c;
-        buildColorPicker();
-      };
-      container.appendChild(div);
-    });
-  }
-
-  function renderCalendar() {
-    const monthNames = ['January','February','March','April','May','June',
-                        'July','August','September','October','November','December'];
-    document.getElementById('monthLabel').textContent = `${monthNames[viewMonth]} ${viewYear}`;
-
-    const grid = document.getElementById('calGrid');
-    grid.innerHTML = '';
-
-    // Day labels
-    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
-      const lbl = document.createElement('div');
-      lbl.className = 'day-label';
-      lbl.textContent = d;
-      grid.appendChild(lbl);
-    });
-
-    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const today = new Date();
-
-    // Empty cells
-    for (let i = 0; i < firstDay; i++) {
-      const empty = document.createElement('div');
-      empty.className = 'day-cell empty';
-      grid.appendChild(empty);
+  // ── Password hashing (djb2 + salt) ────────────────────────────────────────
+  function hashPassword(pw) {
+    const salted = 'cal_salt_2024_' + pw;
+    let hash = 5381;
+    for (let i = 0; i < salted.length; i++) {
+      hash = ((hash << 5) + hash) ^ salted.charCodeAt(i);
+      hash = hash >>> 0;
     }
+    return hash.toString(16);
+  }
 
-    for (let d = 1; d <= daysInMonth; d++) {
-      const cell = document.createElement('div');
-      cell.className = 'day-cell';
+  function checkPassword(pw) {
+    return hashPassword(pw) === storedHash;
+  }
 
-      const isToday = d === today.getDate() &&
-                      viewMonth === today.getMonth() &&
-                      viewYear === today.getFullYear();
-      if (isToday) cell.classList.add('today');
+  // ── Lockout helpers ────────────────────────────────────────────────────────
+  function isLockedOut() {
+    return Date.now() < lockoutUntil;
+  }
 
-      const key = dateKey(viewYear, viewMonth, d);
-      const dayEvents = events[key] || [];
+  function remainingLockoutMins() {
+    return Math.ceil((lockoutUntil - Date.now()) / 60000);
+  }
 
-      const numDiv = document.createElement('div');
-      numDiv.className = 'day-num';
-      numDiv.textContent = d;
-      cell.appendChild(numDiv);
+  function recordFailedAttempt() {
+    failedAttempts++;
+    localStorage.setItem('calFailedAttempts', failedAttempts);
+    if (failedAttempts >= MAX_ATTEMPTS) {
+      lockoutUntil = Date.now() + LOCKOUT_MINUTES * 60 * 1000;
+      localStorage.setItem('calLockoutUntil', lockoutUntil);
+    }
+  }
 
-      if (dayEvents.length > 0) {
-        const dots = document.createElement('div');
-        dots.className = 'event-dots';
-        dayEvents.slice(0, 4).forEach(ev => {
-          const dot = document.createElement('div');
-          dot.className = 'event-dot';
-          dot.style.background = ev.color || COLORS[0];
-          dots.appendChild(dot);
-        });
-        cell.appendChild(dots);
+  function resetAttempts() {
+    failedAttempts = 0;
+    lockoutUntil = 0;
+    localStorage.setItem('calFailedAttempts', '0');
+    localStorage.setItem('calLockoutUntil', '0');
+  }
+
+  // ── Auth UI ────────────────────────────────────────────────────────────────
+  function updateAuthBar() {
+    const badge = document.getElementById('authBadge');
+    const btn   = document.getElementById('authActionBtn');
+    if (isEditor) {
+      badge.className = 'auth-badge editor';
+      badge.textContent = '✏️ Editor mode';
+      btn.className = 'auth-action-btn logout-btn';
+      btn.textContent = '🔓 Lock editing';
+    } else {
+      badge.className = 'auth-badge viewer';
+      badge.textContent = '👁 Viewing only';
+      btn.className = 'auth-action-btn login-btn';
+      btn.textContent = '🔑 Editor Login';
+    }
+  }
+
+  function handleAuthAction() {
+    if (isEditor) {
+      isEditor = false;
+      updateAuthBar();
+      renderEventModal();
+    } else {
+      openPasswordModal();
+    }
+  }
+
+  // ── Password modal ─────────────────────────────────────────────────────────
+  function openPasswordModal() {
+    document.getElementById('passwordInput').value = '';
+    clearPwError();
+    updateAttemptsWarning();
+    document.getElementById('passwordModalOverlay').classList.add('active');
+    if (!isLockedOut()) {
+      setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+    }
+  }
+
+  function closePasswordModal() {
+    document.getElementById('passwordModalOverlay').classList.remove('active');
+  }
+
+  function clearPwError() {
+    document.getElementById('pwErrorMsg').classList.remove('visible');
+    document.getElementById('passwordInput').classList.remove('input-error');
+  }
+
+  function updateAttemptsWarning() {
+    const warn  = document.getElementById('attemptsWarning');
+    const input = document.getElementById('passwordInput');
+    const btn   = document.getElementById('pwSubmitBtn');
+
+    if (isLockedOut()) {
+      warn.textContent = `Too many failed attempts. Please wait ${remainingLockoutMins()} minute(s) before trying again.`;
+      warn.classList.add('visible');
+      input.disabled = true;
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
+      setTimeout(updateAttemptsWarning, 10000);
+    } else {
+      input.disabled = false;
+      btn.disabled = false;
+      btn.style.opacity = '';
+      btn.style.cursor = '';
+      if (failedAttempts > 0 && failedAttempts < MAX_ATTEMPTS) {
+        warn.textContent = `${MAX_ATTEMPTS - failedAttempts} attempt(s) remaining before temporary lockout.`;
+        warn.classList.add('visible');
+      } else {
+        warn.classList.remove('visible');
       }
-
-      cell.onclick = () => openModal(viewYear, viewMonth, d);
-      grid.appendChild(cell);
     }
-
-    renderUpcoming();
   }
 
-  function openModal(y, m, d) {
-    selectedDateKey = dateKey(y, m, d);
-    const monthNames = ['January','February','March','April','May','June',
-                        'July','August','September','October','November','December'];
-    document.getElementById('modalDateTitle').textContent =
-      `${d} ${monthNames[m]} ${y}`;
-    document.getElementById('eventTitle').value = '';
-    document.getElementById('eventTime').value = '';
-    document.getElementById('eventDesc').value = '';
-    buildColorPicker();
-    renderDayEvents();
-    document.getElementById('modalOverlay').classList.add('active');
-  }
+  function submitPassword() {
+    if (isLockedOut()) { updateAttemptsWarning(); return; }
 
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-    selectedDateKey = null;
-  }
+    const pw = document.getElementById('passwordInput').value;
+    clearPwError();
 
-  function addEvent() {
-    const title = document.getElementById('eventTitle').value.trim();
-    if (!title) {
-      document.getElementById('eventTitle').focus();
-      return;
+    if (checkPassword(pw)) {
+      resetAttempts();
+      isEditor = true;
+      updateAuthBar();
+      closePasswordModal();
+      if (selectedDateKey) renderEventModal();
+    } else {
+      recordFailedAttempt();
+      document.getElementById('pwErrorMsg').classList.add('visible');
+      document.getElementById('passwordInput').classList.add('input-error');
+      document.getElementById('passwordInput').value = '';
+      updateAttemptsWarning();
     }
-    const time = document.getElementById('eventTime').value;
-    const desc = document.getElementById('eventDesc').value.trim();
-
-    if (!events[selectedDateKey]) events[selectedDateKey] = [];
-    events[selectedDateKey].push({ title, time, desc, color: selectedColor, id: Date.now() });
-    saveEvents();
-
-    document.getElementById('eventTitle').value = '';
-    document.getElementById('eventTime').value = '';
-    document.getElementById('eventDesc').value = '';
-
-    renderDayEvents();
-    renderCalendar();
   }
 
-  function deleteEvent(dateKey, id) {
-    events[dateKey] = (events[dateKey] || []).filter(e => e.id !== id);
-    if (events[dateKey].length === 0) delete events[dateKey];
-    saveEvents();
-    renderDayEvents();
-    renderCalendar();
-  }
-
-  function renderDayEvents() {
-    const container = document.getElementById('dayEventsList');
-    const dayEvents = events[selectedDateKey] || [];
-    if (dayEvents.length === 0) {
-      container.innerHTML = '<div class="no-events">No events yet. Add one above!</div>';
-      return;
-    }
-    container.innerHTML = '';
-    dayEvents.forEach(ev => {
-      const item = document.createElement('div');
-      item.className = 'event-item';
-
-      const bar = document.createElement('div');
-      bar.className = 'event-color-bar';
-      bar.style.background = ev.color || COLORS[0];
-
-      const info = document.createElement('div');
-      info.className = 'event-info';
-      info.innerHTML = `
-        <div class="event-title">${escHtml(ev.title)}</div>
-        ${ev.time ? `<div class="event-time">&#128336; ${formatTime(ev.time)}</div>` : ''}
-        ${ev.desc ? `<div class="event-desc">${escHtml(ev.desc)}</div>` : ''}
-      `;
-
-      const del = document.createElement('button');
-      del.className = 'delete-btn';
-      del.title = 'Delete event';
-      del.innerHTML = '&#128465;';
-      del.onclick = () => deleteEvent(selectedDateKey, ev.id);
-
-      item.appendChild(bar);
-      item.appendChild(info);
-      item.appendChild(del);
-      container.appendChild(item);
+  // ── Change password modal ──────────────────────────────────────────────────
+  function openChangePwModal() {
+    closePasswordModal();
+    ['currentPwInput','newPwInput','confirmPwInput'].forEach(id => {
+      document.getElementById(id).value = '';
     });
-  }
-
-  function renderUpcoming() {
-    const container = document.getElementById('upcomingList');
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    const upcoming = Object.entries(events)
-      .filter(([k]) => new Date(k) >= today)
-      .sort(([a],[b]) => new Date(a) - new Date(b))
-      .slice(0, 8);
-
-    if (upcoming.length === 0) {
-      container.innerHTML = '<div class="no-upcoming">No upcoming events. Click a date to add one!</div>';
-      return;
-    }
-
-    const monthShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    container.innerHTML = '';
-
-    upcoming.forEach(([key, evList]) => {
-      const dt = new Date(key + 'T00:00:00');
-      evList.forEach(ev => {
-        const item = document.createElement('div');
-        item.className = 'upcoming-item';
-        item.innerHTML = `
-          <div class="upcoming-date-box">
-            <div class="u-day">${dt.getDate()}</div>
-            <div class="u-month">${monthShort[dt.getMonth()]}</div>
-          </div>
-          <div class="upcoming-info">
-            <div class="u-title">${escHtml(ev.title)}</div>
-            ${ev.time ? `<div class="u-time">&#128336; ${formatTime(ev.time)}</div>` : ''}
-            ${ev.desc ? `<div class="u-desc">${escHtml(ev.desc)}</div>` : ''}
-          </div>
-        `;
-        container.appendChild(item);
-      });
+    ['currentPwError','newPwError','confirmPwError'].forEach(id => {
+      document.getElementById(id).classList.remove('visible');
     });
+    ['currentPwInput','newPwInput','confirmPwInput'].forEach(id => {
+      document.getElementById(id).classList.remove('input-error');
+    });
+    document.getElementById('changePwModalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('currentPwInput').focus(), 100);
   }
 
-  function changeMonth(dir) {
-    viewMonth += dir;
-    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-    if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
-    renderCalendar();
+  function closeChangePwModal() {
+    document.getElementById('changePwModalOverlay').classList.remove('active');
   }
 
-  function formatTime(t) {
-    if (!t) return '';
-    const [h, m] = t.split(':').map(Number);
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const hour = h % 12 || 12;
-    return `${hour}:${String(m).padStart(2,'0')} ${ampm}`;
-  }
+  function submitChangePw() {
+    const current = document.getElementById('currentPwInput').value;
+    const newPw   = document.getElementById('newPwInput').value;
+    const confirm = document.getElementById('confirmPwInput').value;
+    let valid = true;
 
-  function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+    ['currentPwError','newPwError','confirmPwError'].forEach(id => {
+      document.getElementById(id).classList.remove('visible');
+    });
+    ['currentPwInput','newPwInput','confirmPwInput'].forEach(id => {
+      document.getElementById(id).classList.remove('input-error');
+    });
 
-  // Close modal on overlay click
-  document.getElementById('modalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+    if (!checkPassword(current)) {
+      document.getElementById('currentPwError').classList.add('visible');
+      document.getElementById('currentPwInput').classList.add('input-error');
+      valid = false;
+    }
+    if (newPw.length < 6) {
+      document.getElementById('newPwError').classList.add('visible');
+      document.getElementById('newPwInput').classList.add('input-error');
+      valid = false;
+    }
+    if (newPw !== confirm) {
+      document.getElementById('confirmPwError').classList.add('visible');
+      document.getElementById('confirmPwInput').classList.add('input-error');
+      valid = false;
+    }
+    if (!valid) return;
 
-  // Allow Enter key to submit
-  document.getElementById('eventTitle').addEventListener('keydown', e => {
-    if (e.key === 'Enter') addEvent();
-  });
-
-  // Init
-  renderCalendar();
-</script>
-</body>
-</html>
+    storedHash = hashPassword(newPw);
+    localStorage.setItem('calendarEditorPwHash', storedHash);
+    closeChangePwModal();
