@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interactive Calendar</title>
+  <title>Youth Engagement Calendar</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -391,12 +391,115 @@
 
     .color-opt:hover { transform: scale(1.15); }
     .color-opt.selected { border-color: #2d3748; }
+
+    /* Password modal */
+    .pw-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pw-modal-overlay.active { display: flex; }
+
+    .pw-modal {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      animation: slideUp 0.2s ease;
+      text-align: center;
+    }
+
+    .pw-modal h3 {
+      font-size: 1.1rem;
+      color: #2d3748;
+      margin-bottom: 6px;
+    }
+
+    .pw-modal p {
+      font-size: 0.85rem;
+      color: #718096;
+      margin-bottom: 18px;
+    }
+
+    .pw-modal input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2d3748;
+      text-align: center;
+      letter-spacing: 0.15em;
+      font-family: inherit;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .pw-modal input:focus {
+      outline: none;
+      border-color: #4299e1;
+    }
+
+    .pw-modal input.error {
+      border-color: #e53e3e;
+      background: #fff5f5;
+    }
+
+    .pw-error-msg {
+      font-size: 0.82rem;
+      color: #e53e3e;
+      margin-bottom: 10px;
+      min-height: 18px;
+    }
+
+    .pw-btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pw-confirm-btn {
+      flex: 1;
+      padding: 10px;
+      background: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .pw-confirm-btn:hover { background: #3182ce; }
+
+    .pw-cancel-btn {
+      flex: 1;
+      padding: 10px;
+      background: #edf2f7;
+      color: #4a5568;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .pw-cancel-btn:hover { background: #e2e8f0; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>📅 Calendar of Events </h1>
+  <h1>📅 Calendar of Events</h1>
 
   <div class="calendar-card">
     <div class="cal-header">
@@ -413,7 +516,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Day Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -437,7 +540,7 @@
       <label>Colour</label>
       <div class="color-options" id="colorOptions"></div>
     </div>
-    <button class="add-btn" onclick="addEvent()">Add Event</button>
+    <button class="add-btn" onclick="requestPassword('add')">Add Event</button>
 
     <div class="events-list">
       <h4>Events on this day</h4>
@@ -446,13 +549,32 @@
   </div>
 </div>
 
+<!-- Password Modal -->
+<div class="pw-modal-overlay" id="pwModalOverlay">
+  <div class="pw-modal">
+    <h3>🔒 Admin Access Required</h3>
+    <p>Enter the admin password to continue.</p>
+    <input type="password" id="pwInput" placeholder="Password" maxlength="20" />
+    <div class="pw-error-msg" id="pwErrorMsg"></div>
+    <div class="pw-btn-row">
+      <button class="pw-cancel-btn" onclick="cancelPassword()">Cancel</button>
+      <button class="pw-confirm-btn" onclick="confirmPassword()">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const COLORS = ['#4299e1','#48bb78','#ed8936','#e53e3e','#9f7aea','#38b2ac','#f6ad55','#fc8181'];
+  const ADMIN_PASSWORD = 'TYNADMIN';
+
   let selectedColor = COLORS[0];
   let currentDate = new Date();
   let viewYear = currentDate.getFullYear();
   let viewMonth = currentDate.getMonth();
   let selectedDateKey = null;
+
+  // Tracks what action is pending password confirmation: 'add' or a delete event id
+  let pendingAction = null;
 
   // Load events from localStorage
   let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
@@ -464,6 +586,57 @@
   function dateKey(y, m, d) {
     return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   }
+
+  // ── Password modal ──────────────────────────────────────────────
+
+  function requestPassword(action) {
+    // For 'add', validate the title field first before asking for password
+    if (action === 'add') {
+      const title = document.getElementById('eventTitle').value.trim();
+      if (!title) {
+        document.getElementById('eventTitle').focus();
+        return;
+      }
+    }
+    pendingAction = action;
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').classList.remove('error');
+    document.getElementById('pwErrorMsg').textContent = '';
+    document.getElementById('pwModalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('pwInput').focus(), 80);
+  }
+
+  function confirmPassword() {
+    const entered = document.getElementById('pwInput').value;
+    if (entered === ADMIN_PASSWORD) {
+      document.getElementById('pwModalOverlay').classList.remove('active');
+      executeAction(pendingAction);
+      pendingAction = null;
+    } else {
+      document.getElementById('pwInput').classList.add('error');
+      document.getElementById('pwErrorMsg').textContent = 'Incorrect password. Please try again.';
+      document.getElementById('pwInput').value = '';
+      document.getElementById('pwInput').focus();
+    }
+  }
+
+  function cancelPassword() {
+    document.getElementById('pwModalOverlay').classList.remove('active');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwErrorMsg').textContent = '';
+    pendingAction = null;
+  }
+
+  function executeAction(action) {
+    if (action === 'add') {
+      addEvent();
+    } else {
+      // action is the event id to delete
+      deleteEvent(selectedDateKey, action);
+    }
+  }
+
+  // ── Calendar ────────────────────────────────────────────────────
 
   function buildColorPicker() {
     const container = document.getElementById('colorOptions');
@@ -488,7 +661,6 @@
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
 
-    // Day labels
     ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
       const lbl = document.createElement('div');
       lbl.className = 'day-label';
@@ -500,7 +672,6 @@
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
     const today = new Date();
 
-    // Empty cells
     for (let i = 0; i < firstDay; i++) {
       const empty = document.createElement('div');
       empty.className = 'day-cell empty';
@@ -619,7 +790,8 @@
       del.className = 'delete-btn';
       del.title = 'Delete event';
       del.innerHTML = '&#128465;';
-      del.onclick = () => deleteEvent(selectedDateKey, ev.id);
+      // Pass the event id as the pending action
+      del.onclick = () => requestPassword(ev.id);
 
       item.appendChild(bar);
       item.appendChild(info);
@@ -686,14 +858,19 @@
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // Close modal on overlay click
+  // Close day modal on overlay click
   document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
-  // Allow Enter key to submit
+  // Allow Enter key in password field to confirm
+  document.getElementById('pwInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmPassword();
+  });
+
+  // Allow Enter key in title field to trigger password prompt
   document.getElementById('eventTitle').addEventListener('keydown', e => {
-    if (e.key === 'Enter') addEvent();
+    if (e.key === 'Enter') requestPassword('add');
   });
 
   // Init
